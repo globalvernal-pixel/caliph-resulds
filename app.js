@@ -183,23 +183,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Summary
     document.getElementById("totalMarks").textContent = `${student.totalObtained} / ${student.totalMax}`;
-    document.getElementById("percentage").textContent = `${student.percentage}%`;
 
     const statusEl = document.getElementById("overallStatus");
     statusEl.textContent = `OVERALL RESULT: ${student.status}`;
     statusEl.className = `overall-status-card ${student.status === "PASSED" ? "overall-passed" : "overall-failed"}`;
-
-    // Grade calculation
-    const pct = student.percentage;
-    let grade = "F";
-    if (pct >= 85) grade = "A+";
-    else if (pct >= 75) grade = "A";
-    else if (pct >= 65) grade = "B+";
-    else if (pct >= 55) grade = "B";
-    else if (pct >= 45) grade = "C";
-    else if (pct >= 35) grade = "D";
-
-    document.getElementById("gradeValue").textContent = grade;
 
     // Show result section & smooth scroll
     resultSection.classList.add("visible");

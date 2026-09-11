@@ -86,11 +86,14 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // 2. Roll Score (High Weight: 50 pts)
+        // 2. Register Number / Roll Score (High Weight: 50 pts)
         if (rollRaw) {
-          if (!isNaN(rollNumOnly) && s.slNo === rollNumOnly) {
+          if (s.regNo && s.regNo.toUpperCase() === rollRaw) {
+            score += 50;
+          } else if (!isNaN(rollNumOnly) && s.slNo === rollNumOnly) {
             score += 50;
           } else if (
+            s.registerNumber.toUpperCase() === rollRaw ||
             s.rollNumber.toUpperCase() === rollRaw ||
             (s.regCode && s.regCode.toUpperCase() === rollRaw) ||
             (s.altRollNumber && s.altRollNumber.toUpperCase() === rollRaw)
@@ -141,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayResult(student) {
     // Student Info
     document.getElementById("resStudentName").textContent = student.name;
-    document.getElementById("resRollNumber").textContent = student.rollNumber;
+    document.getElementById("resRollNumber").textContent = student.registerNumber || student.rollNumber;
 
     // Display class format e.g. C2B / S2A / S2B
     let displayClass = student.class;

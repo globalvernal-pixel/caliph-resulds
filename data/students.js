@@ -118,16 +118,16 @@ const rawStudents = [
   // ─────────────────────────────────────────────────────────────
   // CLASS S2A (was S1A)
   // ─────────────────────────────────────────────────────────────
-  { roll: "S2A-04", slNo: 4, name: "FATHIMA BASHEER", class: "S2A", cee: 81.33, fiqh: 89, prac: 69, bea: 79, life: 79 },
-  { roll: "S2A-03", slNo: 3, name: "FATHIMA AFREEN", class: "S2A", cee: 57.33, fiqh: 89, prac: 79, bea: 78, life: 71 },
-  { roll: "S2A-08", slNo: 8, name: "REYAH RIZWA C.P", class: "S2A", cee: 61.33, fiqh: 89, prac: 68, bea: 76, life: 77 },
-  { roll: "S2A-10", slNo: 10, name: "SHIFA ISMAIL V K", class: "S2A", cee: 34.67, fiqh: 86, prac: 67, bea: 70.5, life: 74 },
-  { roll: "S2A-06", slNo: 6, name: "KHADEEJA FATHIN", class: "S2A", cee: 40, fiqh: 85, prac: 56, bea: 70, life: 70 },
-  { roll: "S2A-07", slNo: 7, name: "NADA FATHIMA. K", class: "S2A", cee: 52, fiqh: 83, prac: 49, bea: 55, life: 62 },
-  { roll: "S2A-09", slNo: 9, name: "SEHANA SHERVIN", class: "S2A", cee: 42.67, fiqh: 77, prac: 55, bea: 59, life: 63 },
-  { roll: "S2A-02", slNo: 2, name: "FATHHIYA. R. S", class: "S2A", cee: 40, fiqh: 73, prac: 70, bea: 34, life: 59 },
-  { roll: "S2A-05", slNo: 5, name: "HADHIYA A A", class: "S2A", cee: 56, fiqh: 54, prac: 56, bea: 51, life: 53 },
-  { roll: "S2A-01", slNo: 1, name: "AFRIN FATHIMA MOHAMED SHAFEEK", class: "S2A", cee: 36, fiqh: 51, prac: 53, bea: 60, life: 54 }
+  { roll: "S2A-04", slNo: 4, regNo: "25252378", name: "FATHIMA BASHEER", class: "S2A", cee: 81.33, fiqh: 89, prac: 69, bea: 79, life: 79 },
+  { roll: "S2A-03", slNo: 3, regNo: "25252377", name: "FATHIMA AFREEN", class: "S2A", cee: 57.33, fiqh: 89, prac: 79, bea: 78, life: 71 },
+  { roll: "S2A-08", slNo: 8, regNo: "25252382", name: "REYAH RIZWA C.P", class: "S2A", cee: 61.33, fiqh: 89, prac: 68, bea: 76, life: 77 },
+  { roll: "S2A-10", slNo: 10, regNo: "25252384", name: "SHIFA ISMAIL V K", class: "S2A", cee: 34.67, fiqh: 86, prac: 67, bea: 70.5, life: 74 },
+  { roll: "S2A-06", slNo: 6, regNo: "25252380", name: "KHADEEJA FATHIN", class: "S2A", cee: 40, fiqh: 85, prac: 56, bea: 70, life: 70 },
+  { roll: "S2A-07", slNo: 7, regNo: "25252381", name: "NADA FATHIMA. K", class: "S2A", cee: 52, fiqh: 83, prac: 49, bea: 55, life: 62 },
+  { roll: "S2A-09", slNo: 9, regNo: "25252383", name: "SEHANA SHERVIN", class: "S2A", cee: 42.67, fiqh: 77, prac: 55, bea: 59, life: 63 },
+  { roll: "S2A-02", slNo: 2, regNo: "25252376", name: "FATHHIYA. R. S", class: "S2A", cee: 40, fiqh: 73, prac: 70, bea: 34, life: 59 },
+  { roll: "S2A-05", slNo: 5, regNo: "25252379", name: "HADHIYA A A", class: "S2A", cee: 56, fiqh: 54, prac: 56, bea: 51, life: 53 },
+  { roll: "S2A-01", slNo: 1, regNo: "25252375", name: "AFRIN FATHIMA MOHAMED SHAFEEK", class: "S2A", cee: 36, fiqh: 51, prac: 53, bea: 60, life: 54 }
 ];
 
 // Transform raw students into full record structures
@@ -146,7 +146,9 @@ const studentsData = rawStudents.map((s) => {
   const overallStatus = subjects.every((sub) => sub.status === "Pass") ? "PASSED" : "FAILED";
 
   return {
+    registerNumber: s.regNo || String(s.slNo),
     rollNumber: String(s.slNo),
+    regNo: s.regNo || "",
     regCode: s.roll,
     slNo: s.slNo,
     name: s.name,

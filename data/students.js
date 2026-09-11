@@ -57,7 +57,7 @@ const rawStudents = [
   { regNo: "25230695", roll: "C2B-20", slNo: 20, name: "MUHAMMED ATHISH", class: "C2B", cee: 48, fiqh: 68, prac: 56.5, bea: 46, life: 60.5 },
   { regNo: "25230702", roll: "C2B-38", slNo: 38, name: "NIDAL ABDUL JABBAR", class: "C2B", cee: 50.67, fiqh: 62, prac: 53, bea: 52, life: 58.5 },
   { regNo: "25230672", roll: "C2B-25", slNo: 25, name: "MUHAMMED ISMAIL SHA", class: "C2B", cee: 40, fiqh: 69.5, prac: 54.5, bea: 52, life: 59.5 },
-  { regNo: "25230688", roll: "C2B-19", slNo: 19, name: "MUHAMMAD P", class: "C2B", cee: 30.67, fiqh: 84, prac: 48, bea: 48, life: 63 },
+  { regNo: "25230668", roll: "C2B-19", slNo: 19, name: "MUHAMMAD P", class: "C2B", cee: 30.67, fiqh: 84, prac: 48, bea: 48, life: 63 },
   { regNo: "25230699", roll: "C2B-29", slNo: 29, name: "MUHAMMED NABEEL J", class: "C2B", cee: 58.67, fiqh: 69, prac: 46, bea: 43, life: 57 },
   { regNo: "25230678", roll: "C2B-36", slNo: 36, name: "REHAN MC", class: "C2B", cee: 49.33, fiqh: 77.5, prac: 31, bea: 46.5, life: 65 },
   { regNo: "25230689", roll: "C2B-22", slNo: 22, name: "MUHAMMED FAREED V I", class: "C2B", cee: 41.33, fiqh: 71.5, prac: 40, bea: 50.5, life: 64.5 },

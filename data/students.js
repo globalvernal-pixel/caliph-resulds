@@ -156,7 +156,7 @@ const studentsData = rawStudents.map((s) => {
     totalMax: totalMax,
     percentage: percentage,
     status: overallStatus,
-    examTitle: "Annual Examination 2026",
+    examTitle: "Caliph Integrated Syllabus — 2024-2026 SC9 Batch Result",
     academicYear: "2025-2026"
   };
 });

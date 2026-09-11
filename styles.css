@@ -235,24 +235,35 @@ body {
 }
 
 .portal-subtitle {
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--brand-gold-dark);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  letter-spacing: 0.12em;
+  margin-top: 8px;
+  line-height: 1.4;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  padding: 0 45px;
 }
 
 .portal-subtitle::before,
 .portal-subtitle::after {
   content: '';
-  width: 40px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--brand-gold), transparent);
+  position: absolute;
+  top: 50%;
+  width: 35px;
+  height: 1.5px;
+  background: var(--brand-gold);
+}
+
+.portal-subtitle::before {
+  left: 0;
+}
+
+.portal-subtitle::after {
+  right: 0;
 }
 
 /* ─── Form ─── */

@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
           score += 100;
         }
 
-        // 2. Register Number / Roll Number matching
+        // 2. Register Number / Roll Number matching (STRICT EXACT MATCH)
         if (rollRaw) {
           const sRegNo = (s.regNo || "").toUpperCase();
           const sRegNum = (s.registerNumber || "").toUpperCase();
@@ -92,20 +92,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const sSlNo = String(s.slNo || "").toUpperCase();
           const sRegCode = (s.regCode || "").toUpperCase();
 
-          const digitsOnly = rollRaw.replace(/\D/g, "");
-          const lastOne = digitsOnly.length > 0 ? digitsOnly.slice(-1) : "";
-          const lastTwo = digitsOnly.length > 1 ? digitsOnly.slice(-2) : "";
-
           if (sRegNo === rollRaw || sRegNum === rollRaw) {
             score += 1000; // Exact 8-digit Register Number match
           } else if (sRollNum === rollRaw || sSlNo === rollRaw || sRegCode === rollRaw) {
             score += 800; // Exact Roll Number / SlNo match
-          } else if (sRegNo && sRegNo.includes(rollRaw)) {
-            score += 400; // Partial register match
-          } else if (digitsOnly && (sSlNo === digitsOnly || (lastTwo && sSlNo === parseInt(lastTwo, 10).toString()) || (lastOne && sSlNo === lastOne))) {
-            score += 600; // Match 8-digit register number ending with student's roll number
           } else {
-            score -= 500; // Number mismatch penalty
+            // Disqualify student if specified Register Number / Roll Number does not match
+            return { student: s, score: -10000 };
           }
         }
 

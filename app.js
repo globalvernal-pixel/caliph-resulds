@@ -103,21 +103,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 3. Student Name matching
-        if (nameTokens.length > 0) {
-          const sNameLower = s.name.toLowerCase();
-          if (sNameLower === nameRaw) {
-            score += 1000; // Exact full name
-          } else if (sNameLower.includes(nameRaw)) {
-            score += 500; // Substring match
+        if (nameRaw) {
+          function normalizeToken(token) {
+            return token
+              .toLowerCase()
+              .replace(/^moha[mm]+ed$|^muha[mm]+ed$|^muha[mm]+ad$|^moha[mm]+ad$/g, "muhammad")
+              .replace(/^ahmed$|^ahmedd$|^ahammed$|^ahmmed$/g, "ahammed")
+              .replace(/^fatima$|^fathima$/g, "fathima")
+              .replace(/^ayesha$|^ayisha$|^aysha$/g, "ayisha")
+              .replace(/^sayyid$|^syed$/g, "sayyid");
+          }
+
+          function cleanString(str) {
+            return str
+              .toLowerCase()
+              .replace(/[^a-z0-9\s]/g, " ")
+              .split(/\s+/)
+              .filter(Boolean)
+              .map(normalizeToken)
+              .join(" ");
+          }
+
+          const normQuery = cleanString(nameRaw);
+          const normStudentName = cleanString(s.name);
+
+          const queryTokens = normQuery.split(" ");
+          const studentTokens = normStudentName.split(" ");
+
+          if (normStudentName === normQuery) {
+            score += 1000; // Exact normalized full name match
+          } else if (normStudentName.startsWith(normQuery) || normStudentName.endsWith(normQuery)) {
+            score += 700; // Starts or ends with full query
+          } else if (normStudentName.includes(normQuery)) {
+            score += 500; // Contains full query string
           } else {
-            let matchedTokens = 0;
-            nameTokens.forEach((token) => {
-              if (sNameLower.includes(token)) matchedTokens++;
+            let matchedCount = 0;
+            queryTokens.forEach((qt) => {
+              if (studentTokens.includes(qt)) {
+                matchedCount++;
+              }
             });
-            if (matchedTokens > 0) {
-              score += matchedTokens * 150;
+
+            if (matchedCount > 0) {
+              const matchRatio = matchedCount / Math.max(queryTokens.length, studentTokens.length);
+              score += Math.round(matchRatio * 400);
             } else {
-              score -= 300; // Name mismatch penalty
+              score -= 300; // Mismatch penalty
             }
           }
         }

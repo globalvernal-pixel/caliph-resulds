@@ -12,8 +12,8 @@ const SUBJECT_NAMES = [
   "LIFE OF PROPHET"
 ];
 
-// Helper to create subject object
-function makeSubj(name, obtained, max = 100, pass = 35) {
+// Helper to create subject object (Pass mark = 40)
+function makeSubj(name, obtained, max = 100, pass = 40) {
   const val = parseFloat(obtained);
   return {
     name: name,

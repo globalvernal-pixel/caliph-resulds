@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameRaw = nameInput.value.trim().toLowerCase();
     const nameTokens = nameRaw.split(/\s+/).filter(Boolean);
     const rollRaw = rollInput.value.trim().toUpperCase();
-    const rollNumOnly = parseInt(rollRaw.replace(/\D/g, ""), 10);
     const cls = classSelect.value.toUpperCase();
 
     // Show loading state
@@ -67,74 +66,79 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       btnCheck.classList.remove("btn-loading");
 
-      let scoredStudents = window.STUDENTS_DATA.map((s) => {
+      let matches = window.STUDENTS_DATA.map((s) => {
         let score = 0;
-
-        // 1. Class Score (High Weight: 50 pts)
         const sClass = s.class.toUpperCase();
+
+        // 1. Class filter: If class is selected, student MUST belong to that class
         if (cls) {
-          if (
+          const isClassMatch =
             sClass === cls ||
             `S${sClass}` === cls ||
             `C${sClass}` === cls ||
-            cls.replace(/^[SC]/, "") === sClass
-          ) {
-            score += 50;
-          } else {
-            // Class mismatch penalty
-            score -= 100;
+            cls.replace(/^[SC]/, "") === sClass;
+
+          if (!isClassMatch) {
+            return { student: s, score: -10000 }; // Disqualify wrong class
           }
+          score += 100;
         }
 
-        // 2. Register Number / Roll Score (High Weight: 50 pts)
+        // 2. Register Number / Roll Number matching
         if (rollRaw) {
-          if (s.regNo && s.regNo.toUpperCase() === rollRaw) {
-            score += 50;
-          } else if (!isNaN(rollNumOnly) && s.slNo === rollNumOnly) {
-            score += 50;
-          } else if (
-            s.registerNumber.toUpperCase() === rollRaw ||
-            s.rollNumber.toUpperCase() === rollRaw ||
-            (s.regCode && s.regCode.toUpperCase() === rollRaw) ||
-            (s.altRollNumber && s.altRollNumber.toUpperCase() === rollRaw)
-          ) {
-            score += 50;
+          const sRegNo = (s.regNo || "").toUpperCase();
+          const sRegNum = (s.registerNumber || "").toUpperCase();
+          const sRollNum = String(s.rollNumber || "").toUpperCase();
+          const sSlNo = String(s.slNo || "").toUpperCase();
+          const sRegCode = (s.regCode || "").toUpperCase();
+
+          if (sRegNo === rollRaw || sRegNum === rollRaw) {
+            score += 1000; // Exact 8-digit Register Number match
+          } else if (sRollNum === rollRaw || sSlNo === rollRaw || sRegCode === rollRaw) {
+            score += 800; // Exact Roll Number / SlNo match
+          } else if (sRegNo.includes(rollRaw) || sRegCode.includes(rollRaw)) {
+            score += 400; // Partial register match
+          } else {
+            score -= 500; // Number mismatch penalty
           }
         }
 
-        // 3. Name Score (Token & Substring Weight: up to 40 pts)
+        // 3. Student Name matching
         if (nameTokens.length > 0) {
           const sNameLower = s.name.toLowerCase();
-          let nameScore = 0;
-
-          if (sNameLower.includes(nameRaw)) {
-            nameScore += 40; // Exact substring match
+          if (sNameLower === nameRaw) {
+            score += 1000; // Exact full name
+          } else if (sNameLower.includes(nameRaw)) {
+            score += 500; // Substring match
           } else {
+            let matchedTokens = 0;
             nameTokens.forEach((token) => {
-              if (sNameLower.includes(token)) {
-                nameScore += 20; // Partial word match
-              }
+              if (sNameLower.includes(token)) matchedTokens++;
             });
+            if (matchedTokens > 0) {
+              score += matchedTokens * 150;
+            } else {
+              score -= 300; // Name mismatch penalty
+            }
           }
-          score += Math.min(nameScore, 40);
         }
 
         return { student: s, score: score };
       });
 
-      // Filter candidates with positive score
-      scoredStudents = scoredStudents.filter((item) => item.score > 0);
+      // Filter out negative scores
+      let validMatches = matches.filter((item) => item.score > 0);
 
       // Sort by highest score descending
-      scoredStudents.sort((a, b) => b.score - a.score);
+      validMatches.sort((a, b) => b.score - a.score);
 
-      if (scoredStudents.length === 0) {
-        showToast("No student found matching these details. Please verify the roll number or class.", "error");
+      if (validMatches.length === 0) {
+        showToast("No student found matching these details. Please check the Register Number, Name, or Class.", "error");
         resultSection.classList.remove("visible");
         return;
       }
 
-      const topMatch = scoredStudents[0].student;
+      const topMatch = validMatches[0].student;
       showToast(`Verification successful! Marksheet generated for ${topMatch.name}.`, "success");
       displayResult(topMatch);
     }, 400);

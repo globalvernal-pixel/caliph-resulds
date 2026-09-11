@@ -8,7 +8,7 @@ const SUBJECT_NAMES = [
   "CEE",
   "FIQH",
   "PRACTICAL ISLAM",
-  "THE MOST BEAUTIFUL NAMES",
+  "THE MOST BEAUTIFUL MODEL",
   "LIFE OF PROPHET"
 ];
 
@@ -136,7 +136,7 @@ const studentsData = rawStudents.map((s) => {
     makeSubj("CEE", s.cee),
     makeSubj("FIQH", s.fiqh),
     makeSubj("PRACTICAL ISLAM", s.prac),
-    makeSubj("THE MOST BEAUTIFUL NAMES", s.bea),
+    makeSubj("THE MOST BEAUTIFUL MODEL", s.bea),
     makeSubj("LIFE OF PROPHET", s.life)
   ];
 

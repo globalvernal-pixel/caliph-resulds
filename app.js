@@ -154,11 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayResult(student) {
     // Student Info
     document.getElementById("resStudentName").textContent = student.name;
-    const searchRegInput = rollInput.value.trim();
-    document.getElementById("resRollNumber").textContent =
-      (searchRegInput && searchRegInput.length >= 6)
-        ? searchRegInput
-        : (student.regNo || student.registerNumber || student.rollNumber);
+    document.getElementById("resRollNumber").textContent = student.registerNumber || student.regNo || student.rollNumber;
 
     // Display class format e.g. C2B / S2A / S2B
     let displayClass = student.class;

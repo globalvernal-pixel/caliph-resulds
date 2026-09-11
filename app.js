@@ -92,12 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
           const sSlNo = String(s.slNo || "").toUpperCase();
           const sRegCode = (s.regCode || "").toUpperCase();
 
+          const digitsOnly = rollRaw.replace(/\D/g, "");
+          const lastOne = digitsOnly.length > 0 ? digitsOnly.slice(-1) : "";
+          const lastTwo = digitsOnly.length > 1 ? digitsOnly.slice(-2) : "";
+
           if (sRegNo === rollRaw || sRegNum === rollRaw) {
             score += 1000; // Exact 8-digit Register Number match
           } else if (sRollNum === rollRaw || sSlNo === rollRaw || sRegCode === rollRaw) {
             score += 800; // Exact Roll Number / SlNo match
-          } else if (sRegNo.includes(rollRaw) || sRegCode.includes(rollRaw)) {
+          } else if (sRegNo && sRegNo.includes(rollRaw)) {
             score += 400; // Partial register match
+          } else if (digitsOnly && (sSlNo === digitsOnly || (lastTwo && sSlNo === parseInt(lastTwo, 10).toString()) || (lastOne && sSlNo === lastOne))) {
+            score += 600; // Match 8-digit register number ending with student's roll number
           } else {
             score -= 500; // Number mismatch penalty
           }
@@ -148,7 +154,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayResult(student) {
     // Student Info
     document.getElementById("resStudentName").textContent = student.name;
-    document.getElementById("resRollNumber").textContent = student.registerNumber || student.rollNumber;
+    const searchRegInput = rollInput.value.trim();
+    document.getElementById("resRollNumber").textContent =
+      (searchRegInput && searchRegInput.length >= 6)
+        ? searchRegInput
+        : (student.regNo || student.registerNumber || student.rollNumber);
 
     // Display class format e.g. C2B / S2A / S2B
     let displayClass = student.class;
